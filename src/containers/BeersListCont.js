@@ -15,16 +15,23 @@ class BeersListCont extends Component {
   render() {
     const { beers } = this.props;
 
+    let i = 0;
+
     const beersList = beers.map((el) => {
-      return (
-        <BeersListComp 
-          key={el.id}
-          name={el.name}
-        />
-      );
+      i += 1;
+      if (i <= 10 ) {
+        return (
+          <BeersListComp 
+            key={el.id}
+            name={el.name}
+            tag={el.tagline}
+          />
+        );
+      }
     })
+
     return (
-    <div>
+    <div className="beer-container">
       { beersList }
     </div>
     );

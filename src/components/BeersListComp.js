@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 
 class BeersListComp extends Component {
   render() {
-    const { name } = this.props;
+    const { name, tag } = this.props;
     return (
-      <h1>{ name }</h1>
+      <div className="beer-element">
+        <div className="name-block">
+          <h1>{name}</h1>
+        </div>
+        <div className="content">
+          <p>{tag}</p>
+        </div>
+      </div>
     );
   }
 }
