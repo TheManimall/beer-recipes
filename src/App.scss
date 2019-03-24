@@ -1,10 +1,36 @@
-.beer-container {
+.main-container {
   display: flex;
   width: 100%;
   flex-direction: row;
-  flex-wrap: wrap;
+
+  .beer-container {
+    display: flex;
+    width: 80%;
+    padding: 20px 5%;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    .beer-element {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 10%;
+    }
+    
+  }
+
+  .button-element {
+    display: flex;
+    width: 10%;
+
+    button {
+      position: fixed;
+    }
+  }
+
 }
 
-.beer-element {
-  display: flex;
-}
+
+
