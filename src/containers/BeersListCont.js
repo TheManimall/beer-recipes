@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getBeersData, lazyScroll, loadAnotherBeer, onSelect } from '../actions/getBeers';
+import { getBeersData, lazyScroll, loadAnotherBeer, onSelect, deleteSelected } from '../actions/getBeers';
 import BeersListComp from '../components/BeersListComp';
 
 class BeersListCont extends Component {
@@ -13,11 +13,13 @@ class BeersListCont extends Component {
   }
 
   render() {
-    const { beers, lazyScroll, loadBeers, cursor, limit, page, onSelect } = this.props;
+    const { beers, lazyScroll, loadBeers, cursor, limit, page, onSelect, deleteSelected, showBtn } = this.props;
 
-    let heightY = window.innerHeight;
+    let winHeight = window.innerHeight;
 
-    if (cursor === limit) {
+    let docHeight = document.body.scrollHeight;
+
+    if (Math.abs(limit - cursor) <= 10 ){
       loadBeers(page)
     };
 
@@ -33,19 +35,43 @@ class BeersListCont extends Component {
       );
     })
 
+    
+
+    let scrollTop = window.pageYOffset;
+
     window.onscroll = () => {
-      if (window.pageYOffset > 620) {
-        lazyScroll()
+      let bodyHeight = docHeight / winHeight;
+      let scrollTop = window.pageYOffset;
+      let scroll = (scrollTop / bodyHeight);
+
+      if (scrollTop > (docHeight/2) ) {
+        lazyScroll();
       }
+      
+      // if (window.pageYOffset >= winHeight - 100) {
+      //   lazyScroll()
+      // };
     }
+
+   
+
+    let styleBtn = showBtn ? 'flex' : 'none';
+    
+    console.log(styleBtn, showBtn);
 
     return (
     <div className="main-container">
+
       <div className="beer-container">
         { beersList }
       </div>
-      <div className="button-element"> 
-        <button>DELETE</button>
+      <div className="button-element">
+        <button
+          style={{display: styleBtn,}} 
+          onClick={() => deleteSelected()}
+        >
+          DELETE
+        </button>
       </div>
     </div>
     );
@@ -59,6 +85,7 @@ const mapStateToProps = state => ({
   cursor: state.beer.cursor,
   limit: state.beer.limit,
   page: state.beer.page,
+  showBtn: state.beer.showDelBtn,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -73,7 +100,10 @@ const mapDispatchToProps = dispatch => ({
   },
   onSelect: (id) => {
     dispatch(onSelect(id))
-  }
+  },
+  deleteSelected: () => {
+    dispatch(deleteSelected())
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps) (BeersListCont);
