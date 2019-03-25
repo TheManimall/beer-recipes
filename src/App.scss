@@ -1,3 +1,11 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
 .main-container {
   display: flex;
   width: 100%;
@@ -5,8 +13,7 @@
 
   .beer-container {
     display: flex;
-    width: 80%;
-    padding: 20px 5%;
+    width: 90%;
     justify-content: center;
     flex-direction: column;
     flex-wrap: wrap;
@@ -16,6 +23,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      width: 100%;
+      min-height: 129px;
       height: 10%;
     }
     

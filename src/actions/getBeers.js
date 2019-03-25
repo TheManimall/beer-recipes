@@ -46,3 +46,7 @@ export const onSelect = id => ({
   type: types.ON_SELECT,
   payload: id,
 });
+
+export const deleteSelected = () => ({
+  type: types.DELETE_SELECTED,
+});
