@@ -1,28 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
-import { getBeersData, lazyScroll, loadAnotherBeer, onSelect, deleteSelected } from '../actions/getBeers';
+import { getBeersData, lazyScroll, getAnotherBeer, onSelect, deleteSelected } from '../actions/getBeers';
 import BeersListComp from '../components/BeersListComp';
 
 class BeersListCont extends Component {
   componentDidMount() {
     const { getBeers, page } = this.props;
 
+    //get beers list
     getBeers(page);
   }
 
   render() {
     const { beers, lazyScroll, loadBeers, cursor, limit, page, onSelect, deleteSelected, showBtn } = this.props;
 
-    let winHeight = window.innerHeight;
-
+    //take document height
     let docHeight = document.body.scrollHeight;
 
+    //show or hide delete button
+    let styleBtn = showBtn ? 'flex' : 'none';
+
+    //lazy scroll
+    window.onscroll = () => {
+      let scrollTop = window.pageYOffset;;
+
+      if (scrollTop > (docHeight/2) ) {
+        lazyScroll();
+      }
+    }
+
+    //get another beers list
     if (Math.abs(limit - cursor) <= 10 ){
       loadBeers(page)
     };
 
+    //map list
     const beersList = beers.map((el) => {
       return (
         <BeersListComp 
@@ -35,33 +48,8 @@ class BeersListCont extends Component {
       );
     })
 
-    
-
-    let scrollTop = window.pageYOffset;
-
-    window.onscroll = () => {
-      let bodyHeight = docHeight / winHeight;
-      let scrollTop = window.pageYOffset;
-      let scroll = (scrollTop / bodyHeight);
-
-      if (scrollTop > (docHeight/2) ) {
-        lazyScroll();
-      }
-      
-      // if (window.pageYOffset >= winHeight - 100) {
-      //   lazyScroll()
-      // };
-    }
-
-   
-
-    let styleBtn = showBtn ? 'flex' : 'none';
-    
-    console.log(styleBtn, showBtn);
-
     return (
     <div className="main-container">
-
       <div className="beer-container">
         { beersList }
       </div>
@@ -76,9 +64,7 @@ class BeersListCont extends Component {
     </div>
     );
   }
-}
-
-
+};
 
 const mapStateToProps = state => ({
   beers: state.beer.renderBeers,
@@ -96,7 +82,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(lazyScroll());
   },
   loadBeers: (n) => {
-    dispatch(loadAnotherBeer(n));
+    dispatch(getAnotherBeer(n));
   },
   onSelect: (id) => {
     dispatch(onSelect(id))

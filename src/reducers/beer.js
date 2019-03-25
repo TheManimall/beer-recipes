@@ -1,6 +1,8 @@
 import types from '../types';
 
-const beerReducer = (state = { beers: [], renderBeers: [], selectedBeers: [], cursor: 0, limit: 25, page: 1, showDelBtn: false }, action) => {
+const beerReducer = 
+(state = { beers: [], renderBeers: [], selectedBeers: [], beerInfo: [], cursor: 0, limit: 25, page: 1, showDelBtn: false }, 
+  action) => {
   switch (action.type) {
     case types.GET_BEERS:
       return {
@@ -53,6 +55,11 @@ const beerReducer = (state = { beers: [], renderBeers: [], selectedBeers: [], cu
         cursor: state.cursor += amountOfDel,
         selectedBeers: [],
         showDelBtn: false,
+      }
+    case types.GET_BEER_INFO:
+      return {
+        ...state,
+        beerInfo: state.beers.filter(el => el.id === +action.payload),
       }
     default:
       return {
